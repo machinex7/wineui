@@ -1,6 +1,4 @@
-//TODO This is a TS file that needs to be converted to JS
-
-import axios, { AxiosError, Method } from "axios";
+import axios from "axios";
 import { WaitScreenManager } from "./WaitScreen";
 import { ErrorPopupManager } from "./ErrorView";
 
@@ -19,9 +17,9 @@ const Remote = {
 
 	/**
 	 * Set the message to display on the wait screen.
-	 * @param msg
+	 * @param {string} msg
 	 */
-	set message(msg: string) {
+	set message(msg) {
 		Remote._message = msg;
 		if (Remote._callCount > 0) {
 			WaitScreenManager.show(msg);
@@ -50,10 +48,10 @@ const Remote = {
 
 	/**
 	 * Error handler for for when api calls fail.
-	 * @param result
+	 * @param {any} result
 	 * @private
 	 */
-	_failCallback: function (result: any) {
+	_failCallback: function (result) {
 		Remote._endCall();
 		console.log(result);
 		if (result.response?.data) {
@@ -65,13 +63,6 @@ const Remote = {
 		}
 		if (result instanceof Error) {
 			ErrorPopupManager.show(result.name + ": " + result.message);
-			/*} else if (result.config && result.isAxiosError !== undefined) {
-			let im: InControlMessage = result.response.data as InControlMessage;
-			if (im.report_xmlText !== null) {
-				ErrorPopupManager.show(im);
-			} else {
-				ErrorPopupManager.show((result as AxiosError).message);
-			}*/
 		} else {
 			ErrorPopupManager.show(result.toString());
 		}
@@ -79,16 +70,17 @@ const Remote = {
 
 	/**
 	 * Performs an axios api request.
-	 * @param url
-	 * @param method
-	 * @param data
+	 * @param {string} url
+	 * @param {string} method
+	 * @param {any} [data]
 	 * @private
+	 * @returns {Promise<any>}
 	 */
-	_request: async function <T>(url: string, method: Method, data?: any): Promise<T> {
+	_request: async function (url, method, data) {
 		Remote._startCall();
-		return new Promise<T>((resolve) => {
+		return new Promise((resolve) => {
 			axios
-				.request<T>({
+				.request({
 					method: method,
 					url: Remote._baseUrl + url,
 					data: data,
