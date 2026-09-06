@@ -1,0 +1,181 @@
+/**
+ * Styles for the main landing page (main.html).
+ */
+.topbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--space-md) var(--space-lg);
+	background: var(--color-primary);
+	color: var(--color-text-inverse);
+	box-shadow: var(--shadow-soft);
+	position: sticky;
+	top: 0;
+	z-index: 10;
+}
+
+.topbar-brand {
+	display: flex;
+	align-items: center;
+	gap: var(--space-sm);
+}
+
+.topbar-brand span {
+	font-size: 1.5rem;
+}
+
+.topbar-brand h1 {
+	color: var(--color-text-inverse);
+	font-size: 1.25rem;
+}
+
+.topbar-user {
+	display: flex;
+	align-items: center;
+	gap: var(--space-md);
+}
+
+.topbar-greeting {
+	font-size: 0.9rem;
+	opacity: 0.9;
+}
+
+.topbar .btn-secondary {
+	color: var(--color-text-inverse);
+	border-color: rgba(251, 243, 231, 0.4);
+}
+
+.topbar .btn-secondary:hover {
+	background: rgba(251, 243, 231, 0.12);
+}
+
+.main-content {
+	max-width: 900px;
+	margin: 0 auto;
+	padding: var(--space-lg);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-xl);
+}
+
+/* Search section */
+.search-section h2,
+.recent-section h2 {
+	margin-bottom: var(--space-md);
+}
+
+.search-bar {
+	display: flex;
+	gap: var(--space-sm);
+}
+
+.search-bar input[type="search"] {
+	flex: 1;
+	border: 1px solid var(--color-border-strong);
+	border-radius: var(--radius-sm);
+	padding: 0.75rem 1rem;
+	font-size: 1rem;
+	background: var(--color-surface);
+	color: var(--color-text);
+	outline: none;
+}
+
+.search-bar input[type="search"]:focus {
+	border-color: var(--color-primary);
+	box-shadow: 0 0 0 3px rgba(109, 33, 56, 0.12);
+}
+
+.winery-results {
+	list-style: none;
+	margin: var(--space-md) 0 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-sm);
+}
+
+.winery-result {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-md);
+	padding: var(--space-md);
+}
+
+.winery-result-info h4 {
+	margin: 0 0 0.15rem;
+	font-family: var(--font-heading);
+	font-size: 1.05rem;
+	color: var(--color-primary-dark);
+}
+
+.winery-result-info p {
+	margin: 0;
+	font-size: 0.85rem;
+	color: var(--color-text-muted);
+}
+
+/* Recent ratings */
+.recent-group {
+	margin-top: var(--space-lg);
+}
+
+.recent-group h3 {
+	font-size: 1rem;
+	color: var(--color-text-muted);
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	margin-bottom: var(--space-md);
+}
+
+.card-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+	gap: var(--space-md);
+}
+
+.rating-card {
+	padding: var(--space-md);
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.rating-card:hover {
+	transform: translateY(-2px);
+	box-shadow: var(--shadow-strong);
+}
+
+.rating-card-title {
+	font-family: var(--font-heading);
+	font-size: 1.1rem;
+	color: var(--color-primary-dark);
+}
+
+.rating-card-subtitle {
+	font-size: 0.82rem;
+	color: var(--color-text-muted);
+}
+
+.rating-card-date {
+	font-size: 0.75rem;
+	color: var(--color-text-muted);
+	margin-top: auto;
+	padding-top: 0.3rem;
+}
+
+@media (max-width: 600px) {
+	.topbar {
+		flex-wrap: wrap;
+		gap: var(--space-sm);
+	}
+
+	.search-bar {
+		flex-wrap: wrap;
+	}
+
+	.search-bar .btn-primary {
+		flex: 1 1 100%;
+	}
+}

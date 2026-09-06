@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Cellar Notes</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="css/variables.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+	<header class="topbar">
+		<div class="topbar-brand">
+			<span aria-hidden="true">&#127863;</span>
+			<h1>Cellar Notes</h1>
+		</div>
+		<div class="topbar-user">
+			<span id="user-greeting" class="topbar-greeting"></span>
+			<button id="logout-btn" class="btn btn-secondary">Log Out</button>
+		</div>
+	</header>
+
+	<main class="main-content">
+		<section class="search-section">
+			<h2>Find a Winery</h2>
+			<form id="winery-search-form" class="search-bar">
+				<input
+					type="search"
+					id="winery-search-input"
+					placeholder="Search by winery name, city, or state..."
+					aria-label="Search wineries"
+				/>
+				<button type="button" id="locate-btn" class="btn btn-icon" title="Search near me" aria-label="Search near me">&#128205;</button>
+				<button type="submit" class="btn btn-primary">Search</button>
+			</form>
+			<ul id="winery-results" class="winery-results"></ul>
+		</section>
+
+		<section class="recent-section">
+			<h2>Your Recent Ratings</h2>
+
+			<div class="recent-group">
+				<h3>Wines</h3>
+				<div id="recent-wines" class="card-grid"></div>
+			</div>
+
+			<div class="recent-group">
+				<h3>Wineries</h3>
+				<div id="recent-wineries" class="card-grid"></div>
+			</div>
+		</section>
+	</main>
+
+	<script type="module" src="js/main.js"></script>
+</body>
+</html>
