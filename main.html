@@ -12,13 +12,17 @@
 </head>
 <body>
 	<header class="topbar">
-		<div class="topbar-brand">
-			<span aria-hidden="true">&#127863;</span>
-			<h1>Cellar Notes</h1>
+		<div class="topbar-row">
+			<div class="topbar-brand">
+				<span aria-hidden="true">&#127863;</span>
+				<span class="topbar-brand-name">Cellar Notes</span>
+			</div>
+			<button id="logout-btn" class="btn-logout" title="Log out" aria-label="Log out">Log Out</button>
 		</div>
-		<div class="topbar-user">
-			<span id="user-greeting" class="topbar-greeting"></span>
-			<button id="logout-btn" class="btn btn-secondary">Log Out</button>
+		<div id="current-winery" class="current-winery">
+			<span class="current-winery-label">&#128205; You're currently at</span>
+			<h2 id="current-winery-name">Finding your winery&hellip;</h2>
+			<p id="current-winery-location"></p>
 		</div>
 	</header>
 

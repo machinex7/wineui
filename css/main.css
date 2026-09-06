@@ -3,9 +3,9 @@
  */
 .topbar {
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: var(--space-md) var(--space-lg);
+	flex-direction: column;
+	gap: var(--space-sm);
+	padding: var(--space-md) var(--space-lg) var(--space-lg);
 	background: var(--color-primary);
 	color: var(--color-text-inverse);
 	box-shadow: var(--shadow-soft);
@@ -14,39 +14,70 @@
 	z-index: 10;
 }
 
+.topbar-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
 .topbar-brand {
 	display: flex;
 	align-items: center;
 	gap: var(--space-sm);
 }
 
-.topbar-brand span {
-	font-size: 1.5rem;
-}
-
-.topbar-brand h1 {
-	color: var(--color-text-inverse);
+.topbar-brand span:first-child {
 	font-size: 1.25rem;
 }
 
-.topbar-user {
-	display: flex;
-	align-items: center;
-	gap: var(--space-md);
+.topbar-brand-name {
+	font-family: var(--font-heading);
+	font-weight: 600;
+	font-size: 1.05rem;
 }
 
-.topbar-greeting {
-	font-size: 0.9rem;
-	opacity: 0.9;
-}
-
-.topbar .btn-secondary {
+.btn-logout {
+	background: transparent;
+	border: 1px solid rgba(251, 243, 231, 0.4);
 	color: var(--color-text-inverse);
-	border-color: rgba(251, 243, 231, 0.4);
+	border-radius: var(--radius-sm);
+	padding: 0.4rem 0.9rem;
+	font-size: 0.8rem;
+	font-weight: 600;
 }
 
-.topbar .btn-secondary:hover {
+.btn-logout:hover {
 	background: rgba(251, 243, 231, 0.12);
+}
+
+.current-winery {
+	display: flex;
+	flex-direction: column;
+	gap: 0.2rem;
+}
+
+.current-winery-label {
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--color-accent-light);
+}
+
+.current-winery h2 {
+	color: var(--color-text-inverse);
+	font-size: 1.6rem;
+}
+
+.current-winery p {
+	font-size: 0.9rem;
+	opacity: 0.85;
+}
+
+.current-winery.is-empty h2 {
+	font-size: 1.15rem;
+	font-family: var(--font-body);
+	font-weight: 600;
 }
 
 .main-content {
@@ -100,6 +131,15 @@
 	justify-content: space-between;
 	gap: var(--space-md);
 	padding: var(--space-md);
+	cursor: pointer;
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.winery-result:hover,
+.winery-result:focus-visible {
+	transform: translateY(-1px);
+	box-shadow: var(--shadow-strong);
+	outline: none;
 }
 
 .winery-result-info h4 {

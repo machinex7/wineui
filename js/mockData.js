@@ -25,6 +25,8 @@ export const mockWineries = [
 		city: "Napa",
 		state: "CA",
 		address1: "1200 Vine Row",
+		lat: 38.2975,
+		lng: -122.2869,
 		rating: 4.5,
 	},
 	{
@@ -35,6 +37,8 @@ export const mockWineries = [
 		city: "Walla Walla",
 		state: "WA",
 		address1: "88 Basalt Ln",
+		lat: 46.0646,
+		lng: -118.343,
 		rating: 4,
 	},
 	{
@@ -45,6 +49,8 @@ export const mockWineries = [
 		city: "Willamette Valley",
 		state: "OR",
 		address1: "42 Fern Rd",
+		lat: 45.2712,
+		lng: -123.1265,
 		rating: 3.5,
 	},
 	{
@@ -55,6 +61,8 @@ export const mockWineries = [
 		city: "Paso Robles",
 		state: "CA",
 		address1: "500 Ridgeline Dr",
+		lat: 35.6369,
+		lng: -120.6545,
 		rating: 5,
 	},
 ];
