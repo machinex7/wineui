@@ -17,31 +17,28 @@
 				<span aria-hidden="true">&#127863;</span>
 				<span class="topbar-brand-name">Cellar Notes</span>
 			</div>
-			<button id="logout-btn" class="btn-logout" title="Log out" aria-label="Log out">Log Out</button>
+			<a href="search.html" class="btn-icon-ghost" title="Search wineries" aria-label="Search wineries">&#128269;</a>
 		</div>
+
 		<div id="current-winery" class="current-winery">
-			<span class="current-winery-label">&#128205; You're currently at</span>
-			<h2 id="current-winery-name">Finding your winery&hellip;</h2>
-			<p id="current-winery-location"></p>
+			<div id="current-winery-filled" class="current-winery-filled" hidden>
+				<span class="current-winery-icon" aria-hidden="true">&#127815;</span>
+				<h2 id="current-winery-name"></h2>
+			</div>
+
+			<form id="current-winery-search-form" class="current-winery-empty" hidden>
+				<input
+					type="search"
+					id="current-winery-search-input"
+					placeholder="Search for a winery to check in..."
+					aria-label="Search wineries"
+				/>
+				<button type="submit" class="btn-icon-ghost" title="Search" aria-label="Search">&#128269;</button>
+			</form>
 		</div>
 	</header>
 
 	<main class="main-content">
-		<section class="search-section">
-			<h2>Find a Winery</h2>
-			<form id="winery-search-form" class="search-bar">
-				<input
-					type="search"
-					id="winery-search-input"
-					placeholder="Search by winery name, city, or state..."
-					aria-label="Search wineries"
-				/>
-				<button type="button" id="locate-btn" class="btn btn-icon" title="Search near me" aria-label="Search near me">&#128205;</button>
-				<button type="submit" class="btn btn-primary">Search</button>
-			</form>
-			<ul id="winery-results" class="winery-results"></ul>
-		</section>
-
 		<section class="recent-section">
 			<h2>Your Recent Ratings</h2>
 

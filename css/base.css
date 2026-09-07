@@ -96,6 +96,26 @@ a {
 	background: var(--color-accent-light);
 }
 
+/* Ghost icon button for use on the dark primary background (topbars) */
+.btn-icon-ghost {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(251, 243, 231, 0.12);
+	border: 1px solid rgba(251, 243, 231, 0.3);
+	color: var(--color-text-inverse);
+	border-radius: 50%;
+	width: 2.5rem;
+	height: 2.5rem;
+	font-size: 1.1rem;
+	flex: 0 0 auto;
+	text-decoration: none;
+}
+
+.btn-icon-ghost:hover {
+	background: rgba(251, 243, 231, 0.22);
+}
+
 /* Form fields */
 .field {
 	display: flex;
