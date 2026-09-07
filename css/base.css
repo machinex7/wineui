@@ -16,6 +16,8 @@ body {
 	color: var(--color-text);
 	font-family: var(--font-body);
 	min-height: 100vh;
+	min-height: 100dvh;
+	-webkit-tap-highlight-color: transparent;
 }
 
 h1,
@@ -52,6 +54,7 @@ a {
 	border: none;
 	border-radius: var(--radius-sm);
 	padding: 0.75rem 1.5rem;
+	min-height: 2.75rem;
 	font-size: 0.95rem;
 	font-weight: 600;
 	letter-spacing: 0.02em;
@@ -59,7 +62,7 @@ a {
 }
 
 .btn:active {
-	transform: translateY(1px);
+	transform: scale(0.97);
 }
 
 .btn-primary {
@@ -68,18 +71,10 @@ a {
 	box-shadow: var(--shadow-soft);
 }
 
-.btn-primary:hover {
-	background: var(--color-primary-dark);
-}
-
 .btn-secondary {
 	background: transparent;
 	color: var(--color-primary);
 	border: 1px solid var(--color-border-strong);
-}
-
-.btn-secondary:hover {
-	background: var(--color-bg-alt);
 }
 
 .btn-icon {
@@ -92,10 +87,6 @@ a {
 	flex: 0 0 auto;
 }
 
-.btn-icon:hover {
-	background: var(--color-accent-light);
-}
-
 /* Ghost icon button for use on the dark primary background (topbars) */
 .btn-icon-ghost {
 	display: inline-flex;
@@ -105,15 +96,35 @@ a {
 	border: 1px solid rgba(251, 243, 231, 0.3);
 	color: var(--color-text-inverse);
 	border-radius: 50%;
-	width: 2.5rem;
-	height: 2.5rem;
-	font-size: 1.1rem;
+	width: 2.75rem;
+	height: 2.75rem;
+	font-size: 1.15rem;
 	flex: 0 0 auto;
 	text-decoration: none;
+	transition: background 0.15s ease, transform 0.15s ease;
 }
 
-.btn-icon-ghost:hover {
-	background: rgba(251, 243, 231, 0.22);
+.btn-icon-ghost:active {
+	transform: scale(0.94);
+}
+
+/* Hover-only affordances - gated so tapping on a touchscreen doesn't leave a stuck "hover" state. */
+@media (hover: hover) and (pointer: fine) {
+	.btn-primary:hover {
+		background: var(--color-primary-dark);
+	}
+
+	.btn-secondary:hover {
+		background: var(--color-bg-alt);
+	}
+
+	.btn-icon:hover {
+		background: var(--color-accent-light);
+	}
+
+	.btn-icon-ghost:hover {
+		background: rgba(251, 243, 231, 0.22);
+	}
 }
 
 /* Form fields */

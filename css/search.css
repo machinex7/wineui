@@ -5,7 +5,7 @@
 	display: flex;
 	align-items: center;
 	gap: var(--space-md);
-	padding: var(--space-md) var(--space-lg);
+	padding: calc(var(--space-md) + env(safe-area-inset-top)) var(--space-md) var(--space-md);
 	background: var(--color-primary);
 	color: var(--color-text-inverse);
 	box-shadow: var(--shadow-soft);
@@ -20,21 +20,31 @@
 }
 
 .search-content {
-	max-width: 900px;
 	margin: 0 auto;
-	padding: var(--space-lg);
+	padding: var(--space-md);
+	padding-bottom: calc(var(--space-xl) + env(safe-area-inset-bottom));
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-md);
 }
 
+@media (min-width: 640px) {
+	.search-content {
+		max-width: 900px;
+		padding: var(--space-lg);
+	}
+}
+
 .search-controls {
 	display: flex;
+	flex-wrap: wrap;
 	gap: var(--space-sm);
 }
 
 .search-controls input[type="search"] {
-	flex: 1;
+	flex: 1 1 100%;
+	min-width: 0;
+	min-height: 2.75rem;
 	border: 1px solid var(--color-border-strong);
 	border-radius: var(--radius-sm);
 	padding: 0.75rem 1rem;
@@ -42,6 +52,20 @@
 	background: var(--color-surface);
 	color: var(--color-text);
 	outline: none;
+}
+
+.search-controls .btn-secondary {
+	flex: 1 1 100%;
+}
+
+@media (min-width: 480px) {
+	.search-controls input[type="search"] {
+		flex: 1 1 auto;
+	}
+
+	.search-controls .btn-secondary {
+		flex: 0 0 auto;
+	}
 }
 
 .search-controls input[type="search"]:focus {
@@ -52,7 +76,7 @@
 /* Map */
 .search-map {
 	position: relative;
-	height: 260px;
+	height: clamp(200px, 42vh, 340px);
 	border-radius: var(--radius-md);
 	overflow: hidden;
 	border: 1px solid var(--color-border);
@@ -62,10 +86,12 @@
 
 .map-pin {
 	position: absolute;
-	transform: translate(-50%, -100%);
+	transform: translate(-50%, -85%);
 	display: flex;
-	flex-direction: column;
 	align-items: center;
+	justify-content: center;
+	width: 2.75rem;
+	height: 2.75rem;
 	background: none;
 	border: none;
 	padding: 0;
@@ -76,11 +102,19 @@
 	transition: transform 0.15s ease;
 }
 
-.map-pin:hover,
-.map-pin:focus-visible,
 .map-pin.is-active {
-	transform: translate(-50%, -100%) scale(1.15);
-	outline: none;
+	transform: translate(-50%, -85%) scale(1.15);
+}
+
+.map-pin:focus-visible {
+	outline: 2px solid var(--color-accent-light);
+	outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.map-pin:hover {
+		transform: translate(-50%, -85%) scale(1.15);
+	}
 }
 
 .map-pin-label {
@@ -100,10 +134,15 @@
 	transition: opacity 0.1s ease;
 }
 
-.map-pin:hover .map-pin-label,
 .map-pin:focus-visible .map-pin-label,
 .map-pin.is-active .map-pin-label {
 	opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.map-pin:hover .map-pin-label {
+		opacity: 1;
+	}
 }
 
 .map-you-are-here {
@@ -133,16 +172,26 @@
 	justify-content: space-between;
 	gap: var(--space-md);
 	padding: var(--space-md);
+	min-height: 2.75rem;
 	cursor: pointer;
 	transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.winery-result:hover,
+.winery-result:active {
+	transform: scale(0.98);
+}
+
 .winery-result:focus-visible,
 .winery-result.is-active {
-	transform: translateY(-1px);
 	box-shadow: var(--shadow-strong);
 	outline: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.winery-result:hover {
+		transform: translateY(-1px);
+		box-shadow: var(--shadow-strong);
+	}
 }
 
 .winery-result-info h4 {
@@ -156,14 +205,4 @@
 	margin: 0;
 	font-size: 0.85rem;
 	color: var(--color-text-muted);
-}
-
-@media (max-width: 600px) {
-	.search-controls {
-		flex-wrap: wrap;
-	}
-
-	.search-controls .btn-secondary {
-		flex: 1 1 100%;
-	}
 }

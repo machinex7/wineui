@@ -3,10 +3,11 @@
  */
 .login-page {
 	min-height: 100vh;
+	min-height: 100dvh;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: var(--space-lg);
+	padding: calc(var(--space-lg) + env(safe-area-inset-top)) var(--space-lg) calc(var(--space-lg) + env(safe-area-inset-bottom));
 	background: radial-gradient(circle at top, var(--color-bg-alt), var(--color-bg) 65%);
 }
 
