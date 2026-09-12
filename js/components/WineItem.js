@@ -7,9 +7,9 @@ import { createStarRating } from "./StarRating.js";
 /**
  * @param {{product: import('../api/models').ProductDTO, rating?: number}} wine
  *   `rating`, when present, is the current user's own rating for this wine.
- *   When absent (and not editable), the wine's overall rating
- *   (`product.rating`) is shown instead, visually marked as not the user's
- *   own score.
+ *   When absent, the wine's overall rating (`product.rating`) is shown
+ *   instead, in gray, so the color alone marks it as not the user's own
+ *   score (gold stars mean "this is your rating").
  * @param {{editable?: boolean, onRate?: (value: number) => void}} [options]
  *   Pass `editable: true` to let the user tap to set/change their own
  *   rating; `onRate` is called with the new value.
@@ -37,30 +37,20 @@ export function createWineItem(wine, options = {}) {
 	header.appendChild(name);
 
 	const ratingBox = document.createElement("div");
-	ratingBox.className = "wine-item-rating" + (hasUserRating || editable ? "" : " is-community");
+	ratingBox.className = "wine-item-rating";
 
 	if (editable) {
 		ratingBox.appendChild(
 			createStarRating(rating, {
 				editable: true,
+				averageRating: product.rating,
 				label: `Your rating for ${product.product_name}`,
 				onRate,
 			})
 		);
 	} else {
+		ratingBox.classList.toggle("is-community", !hasUserRating);
 		ratingBox.appendChild(createStarRating(hasUserRating ? rating : product.rating, { showValue: false }));
-	}
-
-	const ratingLabel = document.createElement("span");
-	ratingLabel.className = "wine-item-rating-label";
-	ratingLabel.textContent = hasUserRating || editable ? "Your rating" : "Overall rating";
-	ratingBox.appendChild(ratingLabel);
-
-	if (editable && !hasUserRating) {
-		const overallHint = document.createElement("span");
-		overallHint.className = "wine-item-rating-hint";
-		overallHint.textContent = `Overall ${product.rating.toFixed(1)}`;
-		ratingBox.appendChild(overallHint);
 	}
 
 	item.appendChild(header);

@@ -12,15 +12,17 @@ const EMPTY_STAR = "☆";
 const STAR_COUNT = 5;
 
 /**
- * @param {number} [rating] - value from 0 to maxRating. May be omitted/undefined for an unrated editable widget.
- * @param {{maxRating?: number, showValue?: boolean, editable?: boolean, onRate?: (value: number) => void, label?: string}} [options]
+ * @param {number} [rating] - the user's own rating, from 0 to maxRating. Omit/undefined if they haven't rated it.
+ * @param {{maxRating?: number, showValue?: boolean, editable?: boolean, onRate?: (value: number) => void, label?: string, averageRating?: number}} [options]
+ *   `averageRating`, for an editable widget with no `rating` yet, is shown as
+ *   gray filled stars (instead of gold) so it reads as "not your rating".
  * @returns {HTMLElement}
  */
 export function createStarRating(rating, options = {}) {
-	const { maxRating = STAR_COUNT, showValue = true, editable = false, onRate, label = "Rating" } = options;
+	const { maxRating = STAR_COUNT, showValue = true, editable = false, onRate, label = "Rating", averageRating } = options;
 
 	return editable
-		? createEditableStarRating(rating, { maxRating, onRate, label })
+		? createEditableStarRating(rating, { maxRating, onRate, label, averageRating })
 		: createReadOnlyStarRating(rating, { maxRating, showValue });
 }
 
@@ -63,16 +65,16 @@ function createReadOnlyStarRating(rating, { maxRating, showValue }) {
 
 /**
  * @param {number|undefined} rating
- * @param {{maxRating: number, onRate?: (value: number) => void, label: string}} options
+ * @param {{maxRating: number, onRate?: (value: number) => void, label: string, averageRating?: number}} options
  */
-function createEditableStarRating(rating, { maxRating, onRate, label }) {
-	let value = rating ? Math.round(rating) : 0;
+function createEditableStarRating(rating, { maxRating, onRate, label, averageRating }) {
+	let hasOwnRating = rating !== undefined && rating !== null;
+	let value = hasOwnRating ? Math.round(rating) : Math.round(averageRating || 0);
 	let previewValue = 0;
 
 	const wrapper = document.createElement("div");
 	wrapper.className = "star-rating star-rating-editable";
 	wrapper.setAttribute("role", "radiogroup");
-	wrapper.setAttribute("aria-label", label);
 
 	/** @type {HTMLButtonElement[]} */
 	const buttons = [];
@@ -126,6 +128,7 @@ function createEditableStarRating(rating, { maxRating, onRate, label }) {
 	 * @param {number} i
 	 */
 	function commit(i) {
+		hasOwnRating = true;
 		value = i;
 		previewValue = 0;
 		render();
@@ -135,16 +138,27 @@ function createEditableStarRating(rating, { maxRating, onRate, label }) {
 	}
 
 	function render() {
+		const isPreviewing = previewValue > 0;
 		const activeValue = previewValue || value;
+		// Gold means "this is your rating" (or a preview of what tapping would
+		// set); gray means these stars are just showing the average so far.
+		const isGold = hasOwnRating || isPreviewing;
+
 		buttons.forEach((button, index) => {
 			const starValue = index + 1;
 			const isFilled = starValue <= activeValue;
 			button.textContent = isFilled ? FULL_STAR : EMPTY_STAR;
 			button.classList.toggle("is-filled", isFilled);
-			button.setAttribute("aria-checked", String(starValue === value));
+			button.classList.toggle("is-average", isFilled && !isGold);
+			button.setAttribute("aria-checked", String(hasOwnRating && starValue === value));
 			button.tabIndex = starValue === (value || 1) ? 0 : -1;
 			button.setAttribute("aria-label", `${starValue} star${starValue > 1 ? "s" : ""}`);
 		});
+
+		wrapper.setAttribute(
+			"aria-label",
+			hasOwnRating ? label : `${label} - not yet rated, showing the average of ${value} out of ${maxRating}`
+		);
 	}
 
 	render();

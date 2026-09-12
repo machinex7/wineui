@@ -222,6 +222,11 @@ a {
 	color: var(--color-accent);
 }
 
+/* Gray means these stars show the average rating, not one the user has set themselves */
+.star-rating-star.is-filled.is-average {
+	color: var(--color-text-muted);
+}
+
 .star-rating-star:active {
 	transform: scale(0.88);
 }
@@ -323,26 +328,9 @@ a {
 	}
 }
 
-.wine-item-rating-label {
-	font-size: 0.7rem;
-	color: var(--color-text-muted);
-	text-transform: uppercase;
-	letter-spacing: 0.04em;
-}
-
-/* Community/overall rating shown when the user hasn't rated the wine themselves */
+/* Community/overall rating shown (in gray) when the user hasn't rated the wine themselves */
 .wine-item-rating.is-community .stars-front {
 	color: var(--color-text-muted);
-}
-
-.wine-item-rating.is-community .wine-item-rating-label {
-	font-style: italic;
-}
-
-.wine-item-rating-hint {
-	font-size: 0.72rem;
-	color: var(--color-text-muted);
-	font-style: italic;
 }
 
 /* Generic card */

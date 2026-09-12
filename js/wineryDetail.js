@@ -37,6 +37,7 @@ function renderWinery(winery) {
 	userRatingEl.appendChild(
 		createStarRating(winery.userRating, {
 			editable: true,
+			averageRating: winery.rating,
 			label: `Your rating for ${winery.loc_name}`,
 			onRate: (value) => {
 				// TODO: replace with a winery-rating remote call once the backend is wired up.
