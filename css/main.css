@@ -140,6 +140,7 @@
 }
 
 .rating-card {
+	container-type: inline-size;
 	padding: var(--space-md);
 	display: flex;
 	flex-direction: column;

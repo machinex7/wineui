@@ -169,7 +169,7 @@ a {
 .star-rating {
 	position: relative;
 	display: inline-block;
-	font-size: 1.1rem;
+	font-size: 1.3rem;
 	line-height: 1;
 	white-space: nowrap;
 }
@@ -197,6 +197,39 @@ a {
 	font-size: 0.85rem;
 	color: var(--color-text-muted);
 	vertical-align: middle;
+}
+
+/* Editable star rating - large tappable stars for setting a rating on a phone */
+.star-rating.star-rating-editable {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.1rem;
+}
+
+.star-rating-star {
+	background: none;
+	border: none;
+	padding: 0.4rem;
+	font-size: 2.1rem;
+	line-height: 1;
+	color: var(--color-border-strong);
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+	transition: color 0.1s ease, transform 0.1s ease;
+}
+
+.star-rating-star.is-filled {
+	color: var(--color-accent);
+}
+
+.star-rating-star:active {
+	transform: scale(0.88);
+}
+
+.star-rating-star:focus-visible {
+	outline: 2px solid var(--color-accent-light);
+	outline-offset: 2px;
+	border-radius: var(--radius-sm);
 }
 
 /* Wine color swatch/badge */
@@ -246,9 +279,9 @@ a {
 /* Wine item (reusable wine display: badge, name, and rating) */
 .wine-item {
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: var(--space-md);
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--space-sm);
 }
 
 .wine-item-header {
@@ -268,9 +301,26 @@ a {
 .wine-item-rating {
 	display: flex;
 	flex-direction: column;
-	align-items: flex-end;
+	align-items: flex-start;
 	gap: 0.15rem;
 	flex: 0 0 auto;
+}
+
+/* The editable widget's stars are wide (finger-sized), so only put the
+   name and rating on one row once the wine-item's own container has room
+   for both - a container query, since the same card can be full-width on
+   one screen and a narrow grid cell on another. */
+@container (min-width: 420px) {
+	.wine-item {
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-md);
+	}
+
+	.wine-item-rating {
+		align-items: flex-end;
+	}
 }
 
 .wine-item-rating-label {
@@ -286,6 +336,12 @@ a {
 }
 
 .wine-item-rating.is-community .wine-item-rating-label {
+	font-style: italic;
+}
+
+.wine-item-rating-hint {
+	font-size: 0.72rem;
+	color: var(--color-text-muted);
 	font-style: italic;
 }
 

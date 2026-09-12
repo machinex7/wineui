@@ -11,6 +11,7 @@ const titleEl = document.getElementById("winery-page-title");
 const nameEl = document.getElementById("winery-name");
 const locationEl = document.getElementById("winery-location");
 const ratingEl = document.getElementById("winery-rating");
+const userRatingEl = document.getElementById("winery-user-rating-stars");
 const photoEl = document.getElementById("winery-photo");
 const winesListEl = document.getElementById("winery-wines-list");
 
@@ -33,6 +34,16 @@ function renderWinery(winery) {
 	nameEl.textContent = winery.loc_name;
 	locationEl.textContent = `${winery.loc_type} · ${winery.city}, ${winery.state}`;
 	ratingEl.appendChild(createStarRating(winery.rating));
+	userRatingEl.appendChild(
+		createStarRating(winery.userRating, {
+			editable: true,
+			label: `Your rating for ${winery.loc_name}`,
+			onRate: (value) => {
+				// TODO: replace with a winery-rating remote call once the backend is wired up.
+				winery.userRating = value;
+			},
+		})
+	);
 
 	if (winery.photo) {
 		const img = document.createElement("img");
@@ -58,7 +69,15 @@ function renderWines(companyId) {
 	}
 
 	wines.forEach((wine) => {
-		winesListEl.appendChild(createWineItem(wine));
+		winesListEl.appendChild(
+			createWineItem(wine, {
+				editable: true,
+				onRate: (value) => {
+					// TODO: replace with RemoteProductServlet.rateProduct() once the backend is wired up.
+					wine.rating = value;
+				},
+			})
+		);
 	});
 }
 

@@ -32,6 +32,7 @@ export const mockWineries = [
 		lat: 38.2975,
 		lng: -122.2869,
 		rating: 4.5,
+		userRating: 4.5,
 	},
 	{
 		id_location: 102,
@@ -44,6 +45,7 @@ export const mockWineries = [
 		lat: 46.0646,
 		lng: -118.343,
 		rating: 4,
+		userRating: 4,
 	},
 	{
 		id_location: 103,
@@ -68,6 +70,7 @@ export const mockWineries = [
 		lat: 35.6369,
 		lng: -120.6545,
 		rating: 5,
+		userRating: 5,
 	},
 ];
 

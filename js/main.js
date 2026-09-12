@@ -132,7 +132,18 @@ function buildWineCard(entry) {
 	date.className = "rating-card-date";
 	date.textContent = `Rated ${formatDate(entry.ratedOn)}`;
 
-	card.appendChild(createWineItem({ product: entry.product, rating: entry.rating }));
+	card.appendChild(
+		createWineItem(
+			{ product: entry.product, rating: entry.rating },
+			{
+				editable: true,
+				onRate: (value) => {
+					// TODO: replace with RemoteProductServlet.rateProduct() once the backend is wired up.
+					entry.rating = value;
+				},
+			}
+		)
+	);
 	card.appendChild(subtitle);
 	card.appendChild(date);
 
@@ -160,7 +171,16 @@ function buildWineryCard(entry) {
 
 	card.appendChild(title);
 	card.appendChild(subtitle);
-	card.appendChild(createStarRating(entry.rating));
+	card.appendChild(
+		createStarRating(entry.rating, {
+			editable: true,
+			label: `Your rating for ${entry.winery}`,
+			onRate: (value) => {
+				// TODO: replace with a winery-rating remote call once the backend is wired up.
+				entry.rating = value;
+			},
+		})
+	);
 	card.appendChild(date);
 
 	return card;
