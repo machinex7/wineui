@@ -1,0 +1,53 @@
+/**
+ * Shared design tokens for the wine-inspired color palette and typography.
+ * Import this before any other stylesheet.
+ */
+:root {
+	/* Core wine palette */
+	--color-bg: #f8f1e7;
+	--color-bg-alt: #f1e6d6;
+	--color-surface: #fffdf9;
+	--color-surface-raised: #ffffff;
+
+	--color-primary: #6d2138;
+	--color-primary-dark: #4a1626;
+	--color-primary-light: #8c3a52;
+
+	--color-accent: #c08a3e;
+	--color-accent-light: #e0bd7f;
+
+	--color-text: #2e1b1f;
+	--color-text-muted: #7a5c5c;
+	--color-text-inverse: #fbf3e7;
+
+	--color-border: #e4d6c8;
+	--color-border-strong: #d3bfa8;
+
+	--color-danger: #a3312a;
+	--color-success: #4d7c4a;
+
+	/* Wine variety colors */
+	--color-wine-red: #6d1f2b;
+	--color-wine-white: #d8c07a;
+	--color-wine-rose: #d98a9b;
+	--color-wine-fruit: #d9772f;
+	--color-wine-dessert: #8a4b8f;
+
+	/* Typography */
+	--font-heading: "Playfair Display", Georgia, "Times New Roman", serif;
+	--font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+	/* Spacing */
+	--space-xs: 0.25rem;
+	--space-sm: 0.5rem;
+	--space-md: 1rem;
+	--space-lg: 1.5rem;
+	--space-xl: 2.5rem;
+
+	/* Effects */
+	--radius-sm: 8px;
+	--radius-md: 14px;
+	--radius-lg: 22px;
+	--shadow-soft: 0 8px 24px rgba(74, 22, 38, 0.1);
+	--shadow-strong: 0 16px 40px rgba(74, 22, 38, 0.18);
+}

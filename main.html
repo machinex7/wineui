@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+	<meta name="theme-color" content="#6d2138" />
+	<title>Cellar Notes</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="css/variables.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+	<header class="topbar">
+		<div class="topbar-row">
+			<div class="topbar-brand">
+				<span aria-hidden="true">&#127863;</span>
+				<span class="topbar-brand-name">Cellar Notes</span>
+			</div>
+			<button
+				type="submit"
+				form="current-winery-search-form"
+				class="btn-icon-ghost"
+				title="Search wineries"
+				aria-label="Search wineries"
+			>&#128269;</button>
+		</div>
+
+		<div id="current-winery" class="current-winery">
+			<div id="current-winery-filled" class="current-winery-filled" hidden>
+				<span class="current-winery-icon" aria-hidden="true">&#127815;</span>
+				<h2 id="current-winery-name"></h2>
+			</div>
+
+			<form id="current-winery-search-form" class="current-winery-empty" hidden>
+				<input
+					type="search"
+					id="current-winery-search-input"
+					placeholder="Search for a winery to check in..."
+					aria-label="Search wineries"
+				/>
+			</form>
+		</div>
+	</header>
+
+	<main class="main-content">
+		<section class="recent-section">
+			<h2>Your Recent Ratings</h2>
+
+			<div class="recent-group">
+				<h3>Wines</h3>
+				<div id="recent-wines" class="card-grid"></div>
+			</div>
+
+			<div class="recent-group">
+				<h3>Wineries</h3>
+				<div id="recent-wineries" class="card-grid"></div>
+			</div>
+		</section>
+	</main>
+
+	<script type="module" src="js/main.js"></script>
+</body>
+</html>

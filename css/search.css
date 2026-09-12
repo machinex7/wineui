@@ -1,0 +1,208 @@
+/**
+ * Styles for the winery search page (search.html).
+ */
+.search-topbar {
+	display: flex;
+	align-items: center;
+	gap: var(--space-md);
+	padding: calc(var(--space-md) + env(safe-area-inset-top)) var(--space-md) var(--space-md);
+	background: var(--color-primary);
+	color: var(--color-text-inverse);
+	box-shadow: var(--shadow-soft);
+	position: sticky;
+	top: 0;
+	z-index: 10;
+}
+
+.search-topbar h1 {
+	color: var(--color-text-inverse);
+	font-size: 1.2rem;
+}
+
+.search-content {
+	margin: 0 auto;
+	padding: var(--space-md);
+	padding-bottom: calc(var(--space-xl) + env(safe-area-inset-bottom));
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-md);
+}
+
+@media (min-width: 640px) {
+	.search-content {
+		max-width: 900px;
+		padding: var(--space-lg);
+	}
+}
+
+.search-controls {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-sm);
+}
+
+.search-controls input[type="search"] {
+	flex: 1 1 100%;
+	min-width: 0;
+	min-height: 2.75rem;
+	border: 1px solid var(--color-border-strong);
+	border-radius: var(--radius-sm);
+	padding: 0.75rem 1rem;
+	font-size: 1rem;
+	background: var(--color-surface);
+	color: var(--color-text);
+	outline: none;
+}
+
+.search-controls .btn-secondary {
+	flex: 1 1 100%;
+}
+
+@media (min-width: 480px) {
+	.search-controls input[type="search"] {
+		flex: 1 1 auto;
+	}
+
+	.search-controls .btn-secondary {
+		flex: 0 0 auto;
+	}
+}
+
+.search-controls input[type="search"]:focus {
+	border-color: var(--color-primary);
+	box-shadow: 0 0 0 3px rgba(109, 33, 56, 0.12);
+}
+
+/* Map */
+.search-map {
+	position: relative;
+	height: clamp(200px, 42vh, 340px);
+	border-radius: var(--radius-md);
+	overflow: hidden;
+	border: 1px solid var(--color-border);
+	background: linear-gradient(160deg, #ded0b4 0%, #cdbf9c 45%, #b9a97f 100%);
+	box-shadow: var(--shadow-soft);
+}
+
+.map-pin {
+	position: absolute;
+	transform: translate(-50%, -85%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	color: var(--color-primary-dark);
+	font-size: 1.6rem;
+	filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+	transition: transform 0.15s ease;
+}
+
+.map-pin.is-active {
+	transform: translate(-50%, -85%) scale(1.15);
+}
+
+.map-pin:focus-visible {
+	outline: 2px solid var(--color-accent-light);
+	outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.map-pin:hover {
+		transform: translate(-50%, -85%) scale(1.15);
+	}
+}
+
+.map-pin-label {
+	position: absolute;
+	bottom: 100%;
+	margin-bottom: 0.3rem;
+	background: var(--color-surface-raised);
+	color: var(--color-text);
+	font-size: 0.72rem;
+	font-weight: 600;
+	white-space: nowrap;
+	padding: 0.2rem 0.5rem;
+	border-radius: 999px;
+	box-shadow: var(--shadow-soft);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.1s ease;
+}
+
+.map-pin:focus-visible .map-pin-label,
+.map-pin.is-active .map-pin-label {
+	opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.map-pin:hover .map-pin-label {
+		opacity: 1;
+	}
+}
+
+.map-you-are-here {
+	position: absolute;
+	transform: translate(-50%, -50%);
+	width: 0.85rem;
+	height: 0.85rem;
+	border-radius: 50%;
+	background: #3f7ad9;
+	border: 2px solid var(--color-surface-raised);
+	box-shadow: 0 0 0 4px rgba(63, 122, 217, 0.3);
+}
+
+/* Results list */
+.winery-results {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-sm);
+}
+
+.winery-result {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-md);
+	padding: var(--space-md);
+	min-height: 2.75rem;
+	cursor: pointer;
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.winery-result:active {
+	transform: scale(0.98);
+}
+
+.winery-result:focus-visible,
+.winery-result.is-active {
+	box-shadow: var(--shadow-strong);
+	outline: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.winery-result:hover {
+		transform: translateY(-1px);
+		box-shadow: var(--shadow-strong);
+	}
+}
+
+.winery-result-info h4 {
+	margin: 0 0 0.15rem;
+	font-family: var(--font-heading);
+	font-size: 1.05rem;
+	color: var(--color-primary-dark);
+}
+
+.winery-result-info p {
+	margin: 0;
+	font-size: 0.85rem;
+	color: var(--color-text-muted);
+}
