@@ -1,5 +1,6 @@
 import { createStarRating } from "./components/StarRating.js";
-import { mockRecentWineRatings, mockRecentWineryRatings } from "./mockData.js";
+import { createWineItem } from "./components/WineItem.js";
+import { mockRecentWineRatings, mockRecentWineryRatings, mockWineries } from "./mockData.js";
 import { getLastWinery, findNearestWinery } from "./winery.js";
 
 const sessionUser = JSON.parse(sessionStorage.getItem("wineui.user") || "null");
@@ -16,20 +17,48 @@ const nameEl = document.getElementById("current-winery-name");
 const emptyForm = document.getElementById("current-winery-search-form");
 const emptySearchInput = document.getElementById("current-winery-search-input");
 
+/** @type {number|undefined} */
+let currentWineryId;
+
 /**
  * @param {import('./mockData').mockWineries[number]|undefined} winery
  */
 function setCurrentWinery(winery) {
 	if (!winery) {
+		currentWineryId = undefined;
 		filledEl.hidden = true;
 		emptyForm.hidden = false;
 		return;
 	}
 
+	currentWineryId = winery.id_location;
 	nameEl.textContent = winery.loc_name;
+	filledEl.title = `View ${winery.loc_name}`;
+	filledEl.setAttribute("aria-label", `View ${winery.loc_name}`);
 	filledEl.hidden = false;
 	emptyForm.hidden = true;
 }
+
+/**
+ * @param {number} id
+ */
+function goToWinery(id) {
+	window.location.href = `winery.html?id=${id}`;
+}
+
+function goToCurrentWinery() {
+	if (currentWineryId !== undefined) {
+		goToWinery(currentWineryId);
+	}
+}
+
+filledEl.addEventListener("click", goToCurrentWinery);
+filledEl.addEventListener("keydown", (event) => {
+	if (event.key === "Enter" || event.key === " ") {
+		event.preventDefault();
+		goToCurrentWinery();
+	}
+});
 
 function initCurrentWinery() {
 	// A winery the user already checked in to takes priority over a fresh location lookup.
@@ -102,14 +131,6 @@ function buildWineCard(entry) {
 	const card = document.createElement("div");
 	card.className = "rating-card card";
 
-	const badge = document.createElement("span");
-	badge.className = `wine-badge color-${entry.product.wine_color}`;
-	badge.textContent = entry.product.wine_color;
-
-	const title = document.createElement("div");
-	title.className = "rating-card-title";
-	title.textContent = entry.product.product_name;
-
 	const subtitle = document.createElement("div");
 	subtitle.className = "rating-card-subtitle";
 	subtitle.textContent = entry.winery;
@@ -118,11 +139,16 @@ function buildWineCard(entry) {
 	date.className = "rating-card-date";
 	date.textContent = `Rated ${formatDate(entry.ratedOn)}`;
 
-	card.appendChild(badge);
-	card.appendChild(title);
+	card.appendChild(createWineItem({ product: entry.product, rating: entry.rating }));
 	card.appendChild(subtitle);
-	card.appendChild(createStarRating(entry.rating));
 	card.appendChild(date);
+
+	// Ratings aren't editable here - tapping the card takes the user to the
+	// winery page, where they can update it.
+	const winery = mockWineries.find((w) => w.id_company === entry.product.id_company);
+	if (winery) {
+		makeCardLinkToWinery(card, winery.id_location, `Update your rating for ${entry.product.product_name} at ${entry.winery}`);
+	}
 
 	return card;
 }
@@ -151,7 +177,31 @@ function buildWineryCard(entry) {
 	card.appendChild(createStarRating(entry.rating));
 	card.appendChild(date);
 
+	// Ratings aren't editable here - tapping the card takes the user to the
+	// winery page, where they can update it.
+	makeCardLinkToWinery(card, entry.id_location, `Update your rating for ${entry.winery}`);
+
 	return card;
+}
+
+/**
+ * Makes a recent-ratings card navigate to the given winery's page on click
+ * or keyboard activation.
+ * @param {HTMLElement} card
+ * @param {number} wineryId
+ * @param {string} title
+ */
+function makeCardLinkToWinery(card, wineryId, title) {
+	card.setAttribute("role", "button");
+	card.tabIndex = 0;
+	card.title = title;
+	card.addEventListener("click", () => goToWinery(wineryId));
+	card.addEventListener("keydown", (event) => {
+		if (event.key === "Enter" || event.key === " ") {
+			event.preventDefault();
+			goToWinery(wineryId);
+		}
+	});
 }
 
 /**
