@@ -145,11 +145,17 @@
 	display: flex;
 	flex-direction: column;
 	gap: 0.4rem;
+	cursor: pointer;
 	transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .rating-card:active {
 	transform: scale(0.98);
+}
+
+.rating-card:focus-visible {
+	outline: 2px solid var(--color-primary-light);
+	outline-offset: 2px;
 }
 
 @media (hover: hover) and (pointer: fine) {

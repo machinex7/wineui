@@ -74,11 +74,11 @@ export const mockWineries = [
 	},
 ];
 
-/** @type {Array<{winery: string, location: string, rating: number, ratedOn: string}>} */
+/** @type {Array<{id_location: number, winery: string, location: string, rating: number, ratedOn: string}>} */
 export const mockRecentWineryRatings = [
-	{ winery: "Rolling Hills Vineyard", location: "Napa, CA", rating: 4.5, ratedOn: "2026-08-30" },
-	{ winery: "Sunset Terrace Winery", location: "Paso Robles, CA", rating: 5, ratedOn: "2026-08-22" },
-	{ winery: "Stone Ridge Cellars", location: "Walla Walla, WA", rating: 4, ratedOn: "2026-08-14" },
+	{ id_location: 101, winery: "Rolling Hills Vineyard", location: "Napa, CA", rating: 4.5, ratedOn: "2026-08-30" },
+	{ id_location: 104, winery: "Sunset Terrace Winery", location: "Paso Robles, CA", rating: 5, ratedOn: "2026-08-22" },
+	{ id_location: 102, winery: "Stone Ridge Cellars", location: "Walla Walla, WA", rating: 4, ratedOn: "2026-08-14" },
 ];
 
 /**

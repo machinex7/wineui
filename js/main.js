@@ -1,6 +1,6 @@
 import { createStarRating } from "./components/StarRating.js";
 import { createWineItem } from "./components/WineItem.js";
-import { mockRecentWineRatings, mockRecentWineryRatings } from "./mockData.js";
+import { mockRecentWineRatings, mockRecentWineryRatings, mockWineries } from "./mockData.js";
 import { getLastWinery, findNearestWinery } from "./winery.js";
 
 const sessionUser = JSON.parse(sessionStorage.getItem("wineui.user") || "null");
@@ -39,9 +39,16 @@ function setCurrentWinery(winery) {
 	emptyForm.hidden = true;
 }
 
+/**
+ * @param {number} id
+ */
+function goToWinery(id) {
+	window.location.href = `winery.html?id=${id}`;
+}
+
 function goToCurrentWinery() {
 	if (currentWineryId !== undefined) {
-		window.location.href = `winery.html?id=${currentWineryId}`;
+		goToWinery(currentWineryId);
 	}
 }
 
@@ -132,20 +139,16 @@ function buildWineCard(entry) {
 	date.className = "rating-card-date";
 	date.textContent = `Rated ${formatDate(entry.ratedOn)}`;
 
-	card.appendChild(
-		createWineItem(
-			{ product: entry.product, rating: entry.rating },
-			{
-				editable: true,
-				onRate: (value) => {
-					// TODO: replace with RemoteProductServlet.rateProduct() once the backend is wired up.
-					entry.rating = value;
-				},
-			}
-		)
-	);
+	card.appendChild(createWineItem({ product: entry.product, rating: entry.rating }));
 	card.appendChild(subtitle);
 	card.appendChild(date);
+
+	// Ratings aren't editable here - tapping the card takes the user to the
+	// winery page, where they can update it.
+	const winery = mockWineries.find((w) => w.id_company === entry.product.id_company);
+	if (winery) {
+		makeCardLinkToWinery(card, winery.id_location, `Update your rating for ${entry.product.product_name} at ${entry.winery}`);
+	}
 
 	return card;
 }
@@ -171,19 +174,34 @@ function buildWineryCard(entry) {
 
 	card.appendChild(title);
 	card.appendChild(subtitle);
-	card.appendChild(
-		createStarRating(entry.rating, {
-			editable: true,
-			label: `Your rating for ${entry.winery}`,
-			onRate: (value) => {
-				// TODO: replace with a winery-rating remote call once the backend is wired up.
-				entry.rating = value;
-			},
-		})
-	);
+	card.appendChild(createStarRating(entry.rating));
 	card.appendChild(date);
 
+	// Ratings aren't editable here - tapping the card takes the user to the
+	// winery page, where they can update it.
+	makeCardLinkToWinery(card, entry.id_location, `Update your rating for ${entry.winery}`);
+
 	return card;
+}
+
+/**
+ * Makes a recent-ratings card navigate to the given winery's page on click
+ * or keyboard activation.
+ * @param {HTMLElement} card
+ * @param {number} wineryId
+ * @param {string} title
+ */
+function makeCardLinkToWinery(card, wineryId, title) {
+	card.setAttribute("role", "button");
+	card.tabIndex = 0;
+	card.title = title;
+	card.addEventListener("click", () => goToWinery(wineryId));
+	card.addEventListener("keydown", (event) => {
+		if (event.key === "Enter" || event.key === " ") {
+			event.preventDefault();
+			goToWinery(wineryId);
+		}
+	});
 }
 
 /**
