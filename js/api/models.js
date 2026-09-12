@@ -49,6 +49,7 @@
  * @property {string} [address1]
  * @property {number} [lng]
  * @property {number} [zip]
+ * @property {string} [photo]
  */
 
 export {};

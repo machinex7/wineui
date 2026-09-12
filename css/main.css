@@ -40,6 +40,20 @@
 	display: flex;
 	align-items: center;
 	gap: var(--space-sm);
+	border-radius: var(--radius-sm);
+	cursor: pointer;
+	transition: background 0.15s ease;
+}
+
+.current-winery-filled:focus-visible {
+	outline: 2px solid var(--color-accent-light);
+	outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.current-winery-filled:hover {
+		background: rgba(251, 243, 231, 0.12);
+	}
 }
 
 .current-winery-icon {

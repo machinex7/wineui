@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+	<meta name="theme-color" content="#6d2138" />
+	<title>Winery &mdash; Cellar Notes</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="css/variables.css" />
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/winery.css" />
+</head>
+<body>
+	<header class="winery-topbar">
+		<a href="main.html" class="btn-icon-ghost" title="Back" aria-label="Back to main page">&#8592;</a>
+		<h1 id="winery-page-title">Winery</h1>
+	</header>
+
+	<main class="winery-content">
+		<div id="winery-photo" class="winery-photo">
+			<span class="winery-photo-placeholder" aria-hidden="true">&#127815;</span>
+		</div>
+
+		<div class="winery-header-info">
+			<h2 id="winery-name"></h2>
+			<p id="winery-location" class="winery-location"></p>
+			<div id="winery-rating"></div>
+		</div>
+
+		<section class="winery-wines">
+			<h3>Wines</h3>
+			<div id="winery-wines-list" class="wine-list"></div>
+		</section>
+	</main>
+
+	<script type="module" src="js/wineryDetail.js"></script>
+</body>
+</html>

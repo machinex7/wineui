@@ -243,6 +243,52 @@ a {
 	color: var(--color-wine-dessert);
 }
 
+/* Wine item (reusable wine display: badge, name, and rating) */
+.wine-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-md);
+}
+
+.wine-item-header {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.35rem;
+	min-width: 0;
+}
+
+.wine-item-name {
+	font-family: var(--font-heading);
+	font-size: 1.05rem;
+	color: var(--color-primary-dark);
+}
+
+.wine-item-rating {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 0.15rem;
+	flex: 0 0 auto;
+}
+
+.wine-item-rating-label {
+	font-size: 0.7rem;
+	color: var(--color-text-muted);
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+/* Community/overall rating shown when the user hasn't rated the wine themselves */
+.wine-item-rating.is-community .stars-front {
+	color: var(--color-text-muted);
+}
+
+.wine-item-rating.is-community .wine-item-rating-label {
+	font-style: italic;
+}
+
 /* Generic card */
 .card {
 	background: var(--color-surface);

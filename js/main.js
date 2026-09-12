@@ -1,4 +1,5 @@
 import { createStarRating } from "./components/StarRating.js";
+import { createWineItem } from "./components/WineItem.js";
 import { mockRecentWineRatings, mockRecentWineryRatings } from "./mockData.js";
 import { getLastWinery, findNearestWinery } from "./winery.js";
 
@@ -16,20 +17,41 @@ const nameEl = document.getElementById("current-winery-name");
 const emptyForm = document.getElementById("current-winery-search-form");
 const emptySearchInput = document.getElementById("current-winery-search-input");
 
+/** @type {number|undefined} */
+let currentWineryId;
+
 /**
  * @param {import('./mockData').mockWineries[number]|undefined} winery
  */
 function setCurrentWinery(winery) {
 	if (!winery) {
+		currentWineryId = undefined;
 		filledEl.hidden = true;
 		emptyForm.hidden = false;
 		return;
 	}
 
+	currentWineryId = winery.id_location;
 	nameEl.textContent = winery.loc_name;
+	filledEl.title = `View ${winery.loc_name}`;
+	filledEl.setAttribute("aria-label", `View ${winery.loc_name}`);
 	filledEl.hidden = false;
 	emptyForm.hidden = true;
 }
+
+function goToCurrentWinery() {
+	if (currentWineryId !== undefined) {
+		window.location.href = `winery.html?id=${currentWineryId}`;
+	}
+}
+
+filledEl.addEventListener("click", goToCurrentWinery);
+filledEl.addEventListener("keydown", (event) => {
+	if (event.key === "Enter" || event.key === " ") {
+		event.preventDefault();
+		goToCurrentWinery();
+	}
+});
 
 function initCurrentWinery() {
 	// A winery the user already checked in to takes priority over a fresh location lookup.
@@ -102,14 +124,6 @@ function buildWineCard(entry) {
 	const card = document.createElement("div");
 	card.className = "rating-card card";
 
-	const badge = document.createElement("span");
-	badge.className = `wine-badge color-${entry.product.wine_color}`;
-	badge.textContent = entry.product.wine_color;
-
-	const title = document.createElement("div");
-	title.className = "rating-card-title";
-	title.textContent = entry.product.product_name;
-
 	const subtitle = document.createElement("div");
 	subtitle.className = "rating-card-subtitle";
 	subtitle.textContent = entry.winery;
@@ -118,10 +132,8 @@ function buildWineCard(entry) {
 	date.className = "rating-card-date";
 	date.textContent = `Rated ${formatDate(entry.ratedOn)}`;
 
-	card.appendChild(badge);
-	card.appendChild(title);
+	card.appendChild(createWineItem({ product: entry.product, rating: entry.rating }));
 	card.appendChild(subtitle);
-	card.appendChild(createStarRating(entry.rating));
 	card.appendChild(date);
 
 	return card;
