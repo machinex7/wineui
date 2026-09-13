@@ -15,7 +15,11 @@ export const mockLoginResponse = {
 	name: "Alex Rivera",
 };
 
-/** @type {Array<import('./api/models').LocationDTO & {rating: number}>} */
+/**
+ * @type {Array<import('./api/models').LocationDTO & {rating: number}>}
+ * None of these have a `photo` path yet - once the backend fills in
+ * LocationDTO.photo, the winery detail page will pick it up automatically.
+ */
 export const mockWineries = [
 	{
 		id_location: 101,
@@ -28,6 +32,7 @@ export const mockWineries = [
 		lat: 38.2975,
 		lng: -122.2869,
 		rating: 4.5,
+		userRating: 4.5,
 	},
 	{
 		id_location: 102,
@@ -40,6 +45,7 @@ export const mockWineries = [
 		lat: 46.0646,
 		lng: -118.343,
 		rating: 4,
+		userRating: 4,
 	},
 	{
 		id_location: 103,
@@ -64,15 +70,142 @@ export const mockWineries = [
 		lat: 35.6369,
 		lng: -120.6545,
 		rating: 5,
+		userRating: 5,
 	},
 ];
 
-/** @type {Array<{winery: string, location: string, rating: number, ratedOn: string}>} */
+/** @type {Array<{id_location: number, winery: string, location: string, rating: number, ratedOn: string}>} */
 export const mockRecentWineryRatings = [
-	{ winery: "Rolling Hills Vineyard", location: "Napa, CA", rating: 4.5, ratedOn: "2026-08-30" },
-	{ winery: "Sunset Terrace Winery", location: "Paso Robles, CA", rating: 5, ratedOn: "2026-08-22" },
-	{ winery: "Stone Ridge Cellars", location: "Walla Walla, WA", rating: 4, ratedOn: "2026-08-14" },
+	{ id_location: 101, winery: "Rolling Hills Vineyard", location: "Napa, CA", rating: 4.5, ratedOn: "2026-08-30" },
+	{ id_location: 104, winery: "Sunset Terrace Winery", location: "Paso Robles, CA", rating: 5, ratedOn: "2026-08-22" },
+	{ id_location: 102, winery: "Stone Ridge Cellars", location: "Walla Walla, WA", rating: 4, ratedOn: "2026-08-14" },
 ];
+
+/**
+ * Wines belonging to each winery, keyed by id_company. `rating` on the outer
+ * object is the current user's own rating for that wine and is only present
+ * once they've rated it; `product.rating` is the wine's overall/community
+ * rating, shown as a fallback when the user hasn't rated it yet.
+ * @type {Record<number, Array<import('./api/models').WineDetailDTO>>}
+ */
+export const mockWineryWines = {
+	11: [
+		{
+			product: {
+				id_product: 201,
+				id_company: 11,
+				product_name: "Estate Cabernet Sauvignon",
+				wine_color: "Red",
+				abv: 14.2,
+				residual_sugar: 2.1,
+				description: "Bold notes of blackberry, cedar, and a lingering oak finish.",
+				rating: 4.5,
+				approved: 1,
+			},
+			rating: 5,
+		},
+		{
+			product: {
+				id_product: 205,
+				id_company: 11,
+				product_name: "Sauvignon Blanc",
+				wine_color: "White",
+				abv: 12.8,
+				residual_sugar: 1.4,
+				description: "Bright grapefruit and fresh-cut grass with a clean, dry finish.",
+				rating: 4,
+				approved: 1,
+			},
+		},
+	],
+	12: [
+		{
+			product: {
+				id_product: 203,
+				id_company: 12,
+				product_name: "Blush Rosé",
+				wine_color: "Rose",
+				abv: 12.1,
+				residual_sugar: 5.6,
+				description: "Light strawberry and citrus with a dry, refreshing finish.",
+				rating: 3.5,
+				approved: 1,
+			},
+			rating: 3.5,
+		},
+		{
+			product: {
+				id_product: 206,
+				id_company: 12,
+				product_name: "Barrel Reserve Merlot",
+				wine_color: "Red",
+				abv: 13.9,
+				residual_sugar: 2.8,
+				description: "Soft plum and chocolate notes with a smooth, velvety body.",
+				rating: 4.2,
+				approved: 1,
+			},
+		},
+	],
+	13: [
+		{
+			product: {
+				id_product: 204,
+				id_company: 13,
+				product_name: "Late Harvest Riesling",
+				wine_color: "Dessert",
+				abv: 10.5,
+				residual_sugar: 9.8,
+				description: "Honeyed apricot and peach with a silky, sweet finish.",
+				rating: 4.5,
+				approved: 1,
+			},
+			rating: 4.5,
+		},
+		{
+			product: {
+				id_product: 207,
+				id_company: 13,
+				product_name: "Willamette Pinot Noir",
+				wine_color: "Red",
+				abv: 13.2,
+				residual_sugar: 1.9,
+				description: "Delicate red cherry and earth with silky tannins.",
+				rating: 4,
+				approved: 1,
+			},
+		},
+	],
+	14: [
+		{
+			product: {
+				id_product: 202,
+				id_company: 14,
+				product_name: "Reserve Chardonnay",
+				wine_color: "White",
+				abv: 13.5,
+				residual_sugar: 3.4,
+				description: "Crisp green apple and vanilla with a buttery mouthfeel.",
+				rating: 4,
+				approved: 1,
+			},
+			rating: 4,
+		},
+		{
+			product: {
+				id_product: 208,
+				id_company: 14,
+				product_name: "Estate Zinfandel",
+				wine_color: "Red",
+				abv: 14.6,
+				residual_sugar: 3.1,
+				description: "Jammy blackberry and pepper spice with a warm finish.",
+				rating: 4.3,
+				approved: 1,
+			},
+		},
+	],
+};
 
 /** @type {Array<{product: import('./api/models').ProductDTO, rating: number, winery: string, ratedOn: string}>} */
 export const mockRecentWineRatings = [
