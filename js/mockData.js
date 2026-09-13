@@ -274,3 +274,45 @@ export const mockRecentWineRatings = [
 		ratedOn: "2026-08-11",
 	},
 ];
+
+/**
+ * Placeholder feed of friends' recent ratings, standing in until the
+ * friends/following API is defined.
+ * @type {Array<{id: number, friendName: string, type: 'wine'|'winery', productName?: string, winery: string, id_location: number, rating: number, ratedOn: string}>}
+ */
+export const mockFriendActivity = [
+	{
+		id: 1,
+		friendName: "Jordan Lee",
+		type: "wine",
+		productName: "Estate Cabernet Sauvignon",
+		winery: "Rolling Hills Vineyard",
+		id_location: 101,
+		rating: 4.5,
+		ratedOn: "2026-09-10",
+	},
+	{
+		id: 2,
+		friendName: "Sam Patel",
+		type: "winery",
+		winery: "Stone Ridge Cellars",
+		id_location: 102,
+		rating: 4,
+		ratedOn: "2026-09-06",
+	},
+];
+
+/**
+ * Placeholder feed of posts from wineries the user follows, standing in
+ * until the following/posts API is defined.
+ * @type {Array<{id: number, winery: string, id_location: number, message: string, postedOn: string}>}
+ */
+export const mockWineryPosts = [
+	{
+		id: 1,
+		winery: "Sunset Terrace Winery",
+		id_location: 104,
+		message: "Our 2023 Estate Zinfandel just hit the tasting room shelves!",
+		postedOn: "2026-09-08",
+	},
+];

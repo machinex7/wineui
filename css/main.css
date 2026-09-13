@@ -110,20 +110,8 @@
 	}
 }
 
-.recent-section h2 {
-	margin-bottom: var(--space-md);
-}
-
-/* Recent ratings */
-.recent-group {
-	margin-top: var(--space-lg);
-}
-
-.recent-group h3 {
-	font-size: 1rem;
-	color: var(--color-text-muted);
-	text-transform: uppercase;
-	letter-spacing: 0.06em;
+.recent-section h2,
+.feed-section h2 {
 	margin-bottom: var(--space-md);
 }
 
@@ -143,10 +131,30 @@
 	container-type: inline-size;
 	padding: var(--space-md);
 	display: flex;
-	flex-direction: column;
-	gap: 0.4rem;
+	align-items: flex-start;
+	gap: var(--space-md);
 	cursor: pointer;
 	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.rating-card-icon {
+	font-size: 1.5rem;
+	line-height: 1;
+	flex: 0 0 auto;
+}
+
+/* Wine ratings show their symbol on the left (source order); wineries move
+   it after the body instead, so it reads on the right. */
+.rating-card-winery .rating-card-icon {
+	order: 1;
+}
+
+.rating-card-body {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	min-width: 0;
+	flex: 1 1 auto;
 }
 
 .rating-card:active {

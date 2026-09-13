@@ -1,6 +1,12 @@
 import { createStarRating } from "./components/StarRating.js";
 import { createWineItem } from "./components/WineItem.js";
-import { mockRecentWineRatings, mockRecentWineryRatings, mockWineries } from "./mockData.js";
+import {
+	mockRecentWineRatings,
+	mockRecentWineryRatings,
+	mockFriendActivity,
+	mockWineryPosts,
+	mockWineries,
+} from "./mockData.js";
 import { getLastWinery, findNearestWinery } from "./winery.js";
 
 const sessionUser = JSON.parse(sessionStorage.getItem("wineui.user") || "null");
@@ -94,33 +100,28 @@ emptyForm.addEventListener("submit", (event) => {
 });
 
 // --- Recent ratings ------------------------------------------------------
+//
+// Wine and winery ratings are merged into a single feed, sorted newest
+// first. Wine cards show a wine symbol on the left; winery cards show a
+// winery symbol on the right, so the two stay visually distinct at a glance.
 
-const recentWinesEl = document.getElementById("recent-wines");
-const recentWineriesEl = document.getElementById("recent-wineries");
+const recentRatingsEl = document.getElementById("recent-ratings");
 
-function renderRecentWines() {
-	recentWinesEl.innerHTML = "";
+function renderRecentRatings() {
+	recentRatingsEl.innerHTML = "";
 
-	if (mockRecentWineRatings.length === 0) {
-		recentWinesEl.appendChild(buildEmptyState("Rate a wine to see it here."));
+	const entries = [
+		...mockRecentWineRatings.map((entry) => ({ type: "wine", entry })),
+		...mockRecentWineryRatings.map((entry) => ({ type: "winery", entry })),
+	].sort((a, b) => new Date(b.entry.ratedOn) - new Date(a.entry.ratedOn));
+
+	if (entries.length === 0) {
+		recentRatingsEl.appendChild(buildEmptyState("Rate a wine or winery to see it here."));
 		return;
 	}
 
-	mockRecentWineRatings.forEach((entry) => {
-		recentWinesEl.appendChild(buildWineCard(entry));
-	});
-}
-
-function renderRecentWineries() {
-	recentWineriesEl.innerHTML = "";
-
-	if (mockRecentWineryRatings.length === 0) {
-		recentWineriesEl.appendChild(buildEmptyState("Rate a winery to see it here."));
-		return;
-	}
-
-	mockRecentWineryRatings.forEach((entry) => {
-		recentWineriesEl.appendChild(buildWineryCard(entry));
+	entries.forEach(({ type, entry }) => {
+		recentRatingsEl.appendChild(type === "wine" ? buildWineCard(entry) : buildWineryCard(entry));
 	});
 }
 
@@ -129,7 +130,15 @@ function renderRecentWineries() {
  */
 function buildWineCard(entry) {
 	const card = document.createElement("div");
-	card.className = "rating-card card";
+	card.className = "rating-card rating-card-wine card";
+
+	const icon = document.createElement("span");
+	icon.className = "rating-card-icon";
+	icon.setAttribute("aria-hidden", "true");
+	icon.textContent = "\u{1F377}"; // wine glass
+
+	const body = document.createElement("div");
+	body.className = "rating-card-body";
 
 	const subtitle = document.createElement("div");
 	subtitle.className = "rating-card-subtitle";
@@ -139,9 +148,12 @@ function buildWineCard(entry) {
 	date.className = "rating-card-date";
 	date.textContent = `Rated ${formatDate(entry.ratedOn)}`;
 
-	card.appendChild(createWineItem({ product: entry.product, rating: entry.rating }));
-	card.appendChild(subtitle);
-	card.appendChild(date);
+	body.appendChild(createWineItem({ product: entry.product, rating: entry.rating }));
+	body.appendChild(subtitle);
+	body.appendChild(date);
+
+	card.appendChild(icon);
+	card.appendChild(body);
 
 	// Ratings aren't editable here - tapping the card takes the user to the
 	// winery page, where they can update it.
@@ -158,7 +170,15 @@ function buildWineCard(entry) {
  */
 function buildWineryCard(entry) {
 	const card = document.createElement("div");
-	card.className = "rating-card card";
+	card.className = "rating-card rating-card-winery card";
+
+	const icon = document.createElement("span");
+	icon.className = "rating-card-icon";
+	icon.setAttribute("aria-hidden", "true");
+	icon.textContent = "\u{1F347}"; // grapes
+
+	const body = document.createElement("div");
+	body.className = "rating-card-body";
 
 	const title = document.createElement("div");
 	title.className = "rating-card-title";
@@ -172,14 +192,122 @@ function buildWineryCard(entry) {
 	date.className = "rating-card-date";
 	date.textContent = `Rated ${formatDate(entry.ratedOn)}`;
 
-	card.appendChild(title);
-	card.appendChild(subtitle);
-	card.appendChild(createStarRating(entry.rating));
-	card.appendChild(date);
+	body.appendChild(title);
+	body.appendChild(subtitle);
+	body.appendChild(createStarRating(entry.rating));
+	body.appendChild(date);
+
+	card.appendChild(icon);
+	card.appendChild(body);
 
 	// Ratings aren't editable here - tapping the card takes the user to the
 	// winery page, where they can update it.
 	makeCardLinkToWinery(card, entry.id_location, `Update your rating for ${entry.winery}`);
+
+	return card;
+}
+
+// --- Friends & wineries you follow ----------------------------------------
+//
+// Placeholder feed combining friends' recent ratings with posts from
+// wineries the user follows. Backed by mock data for now - the real
+// friends/following API definitions are still to come.
+
+const friendFeedEl = document.getElementById("friend-feed");
+
+function renderFriendFeed() {
+	friendFeedEl.innerHTML = "";
+
+	const items = [
+		...mockFriendActivity.map((entry) => ({ kind: "friend-rating", entry, date: entry.ratedOn })),
+		...mockWineryPosts.map((entry) => ({ kind: "winery-post", entry, date: entry.postedOn })),
+	].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+	if (items.length === 0) {
+		friendFeedEl.appendChild(buildEmptyState("Follow friends and wineries to see their activity here."));
+		return;
+	}
+
+	items.forEach(({ kind, entry }) => {
+		friendFeedEl.appendChild(kind === "friend-rating" ? buildFriendRatingCard(entry) : buildWineryPostCard(entry));
+	});
+}
+
+/**
+ * @param {import('./mockData').mockFriendActivity[number]} entry
+ */
+function buildFriendRatingCard(entry) {
+	const card = document.createElement("div");
+	card.className = "rating-card card";
+
+	const icon = document.createElement("span");
+	icon.className = "rating-card-icon";
+	icon.setAttribute("aria-hidden", "true");
+	icon.textContent = "\u{1F464}"; // person silhouette
+
+	const body = document.createElement("div");
+	body.className = "rating-card-body";
+
+	const title = document.createElement("div");
+	title.className = "rating-card-title";
+	title.textContent = entry.friendName;
+
+	const subtitle = document.createElement("div");
+	subtitle.className = "rating-card-subtitle";
+	subtitle.textContent = entry.type === "wine" ? `Rated ${entry.productName} at ${entry.winery}` : `Rated ${entry.winery}`;
+
+	const date = document.createElement("div");
+	date.className = "rating-card-date";
+	date.textContent = `Rated ${formatDate(entry.ratedOn)}`;
+
+	body.appendChild(title);
+	body.appendChild(subtitle);
+	body.appendChild(createStarRating(entry.rating));
+	body.appendChild(date);
+
+	card.appendChild(icon);
+	card.appendChild(body);
+
+	makeCardLinkToWinery(card, entry.id_location, `View ${entry.winery}`);
+
+	return card;
+}
+
+/**
+ * @param {import('./mockData').mockWineryPosts[number]} entry
+ */
+function buildWineryPostCard(entry) {
+	const card = document.createElement("div");
+	card.className = "rating-card card";
+
+	const icon = document.createElement("span");
+	icon.className = "rating-card-icon";
+	icon.setAttribute("aria-hidden", "true");
+	icon.textContent = "\u{1F4E3}"; // megaphone
+
+	const body = document.createElement("div");
+	body.className = "rating-card-body";
+
+	const title = document.createElement("div");
+	title.className = "rating-card-title";
+	title.textContent = entry.winery;
+
+	const message = document.createElement("div");
+	message.className = "rating-card-subtitle";
+	message.textContent = entry.message;
+
+	const date = document.createElement("div");
+	date.className = "rating-card-date";
+	date.textContent = formatDate(entry.postedOn);
+
+	body.appendChild(title);
+	body.appendChild(message);
+	body.appendChild(date);
+
+	card.appendChild(icon);
+	card.appendChild(body);
+
+	makeCardLinkToWinery(card, entry.id_location, `View ${entry.winery}`);
 
 	return card;
 }
@@ -222,5 +350,5 @@ function formatDate(isoDate) {
 	return date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
 }
 
-renderRecentWines();
-renderRecentWineries();
+renderRecentRatings();
+renderFriendFeed();
